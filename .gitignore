@@ -1,0 +1,25 @@
+# Binaries
+bin/
+main
+api
+
+# Tooling
+docs/docs.go
+docs/*.json
+docs/*.yaml
+
+# Database
+*.db
+*.db-journal
+
+# Dependencies
+vendor/
+
+# Environment
+.env
+
+# OS
+.DS_Store
+
+# Vercel
+.vercel
