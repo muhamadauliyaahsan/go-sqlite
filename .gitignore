@@ -4,9 +4,7 @@ main
 api
 
 # Tooling
-docs/docs.go
-docs/*.json
-docs/*.yaml
+# docs are needed for Vercel swagger
 
 # Database
 *.db
