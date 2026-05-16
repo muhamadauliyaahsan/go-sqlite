@@ -7,6 +7,9 @@ import (
 	"github.com/ahsan/go-sqlite-crud/internal/model"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+
+	_ "modernc.org/sqlite" // Pure-Go SQLite driver (no CGO required)
 )
 
 var DB *gorm.DB
@@ -18,15 +21,18 @@ func InitDB() {
 	}
 
 	var err error
-	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{})
+	DB, err = gorm.Open(sqlite.Open(dbPath), &gorm.Config{
+		Logger: logger.Default.LogMode(logger.Silent),
+	})
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		log.Printf("Failed to connect to database: %v", err)
+		return
 	}
 
 	// Auto Migration
-	err = DB.AutoMigrate(&model.Product{})
-	if err != nil {
-		log.Fatal("Failed to migrate database:", err)
+	if err = DB.AutoMigrate(&model.Product{}); err != nil {
+		log.Printf("Failed to migrate database: %v", err)
+		return
 	}
 
 	log.Println("Database connected and migrated.")
